@@ -1,22 +1,22 @@
+//Declaring Express, importing data persistence and helper methods, and importing Router + JSON functionality. Whew. 
 const express = require("express");
-
 const db = require("../data/helpers/projectModel");
-
 const router = express.Router();
-
 router.use(express.json());
 
+
+// GET request to get everything on the project data using the projectModel.js helper methods
 router.get("/", (req, res) => {
     db.get()
       .then(proj => {
         res.status(200).json({ proj });
       })
       .catch(err => {
-        res.status(500).json({ error: "Sorry" });
+        res.status(500).json({ error: "Oh dear. Seems there's no project in here. Awkward." });
       });
   });
 
-  // GET/READ id
+  // GET/READ PROJECT by id
   router.get("/:id", validateProjectsId, (req, res) => {
     const id = req.params.id;
     db.get(id)
@@ -24,11 +24,11 @@ router.get("/", (req, res) => {
         res.status(200).json(proj);
       })
       .catch(err => {
-        res.status(500).json({ error: "Not working" });
+        res.status(500).json({ error: "Nothing to see here. Consider PUTting to this id and make it live." });
       });
   });
 
-  // POST
+  // POST to project
   router.post("/", (req, res) => {
     const proj = req.body;
     db.insert(proj)
@@ -36,11 +36,11 @@ router.get("/", (req, res) => {
         res.status(200).json(project);
       })
       .catch(err => {
-        res.status(500).json({ error: "Can't post" });
+        res.status(500).json({ error: "Odds are that you did not formulate your object properly. Did you include a project_id, hm?" });
       });
   });
 
-  // DELETE
+  // DELETE from project
   router.delete("/:id", validateProjectsId, (req, res) => {
     const id = req.params.id;
     db.remove(id)
@@ -49,11 +49,11 @@ router.get("/", (req, res) => {
       })
       .catch(err => {
         console.log(err);
-        res.status(500).json({ error: "Could not remove" });
+        res.status(500).json({ error: "Project data could not be evicted. This means war. " });
       });
   });
 
-  // Method update
+  // PUT data
   router.put("/:id", validateProjectsId, (req, res) => {
     const id = req.params.id;
     const changes = req.body;
@@ -62,7 +62,7 @@ router.get("/", (req, res) => {
         res.status(200).json(updated);
       })
       .catch(err => {
-        res.status(500).json({ error: "did not update" });
+        res.status(500).json({ error: "Nothing has changed, he is the same." });
       });
   });
 
